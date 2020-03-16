@@ -33,7 +33,7 @@ If you are mot sure what you can do with that you might want to [check out](http
 ### Basic model
 
 Code:
-`
+```js
 UserInterface.model({
 	name: "simplemodel",
 	method: UserInterface.appendChild,
@@ -45,19 +45,19 @@ UserInterface.model({
 	}
 });
 UserInterface.runModel("simplemodel", {parentNode: document.querySelector("ul")});
-`
+```
 Output:
-`
+```html
 <ul>
 	<li class="simplemodel">My first simple model</li>
 	<li class="simplemodel">My first simple model</li>
 </ul>
-`
+```
 
 ### Children
 
 Code:
-`
+```js
 UserInterface.model({
 	name: "children",
 	method: UserInterface.appendChild,
@@ -76,20 +76,20 @@ UserInterface.model({
 	cssSelectors: ["body"]
 });
 UserInterface.runModel("children");
-`
+```
 Output:
-`
+```html
 <body>
 	<div class="model">
 		<div class="child">My first child</div>
 	</div>
 </body>
-`
+```
 
 ### Callback
 
 Code:
-`
+```js
 UserInterface.model(
 	name: "echomodel",
 	method: UserInterface.appendChild,
@@ -101,14 +101,16 @@ UserInterface.model(
 	})
 );
 UserInterface.runModel("echomodel", {data: {"text": "echo" }});
-`
+```
 Output:
-`<p class="echomodel">My echo model</p>`
+```html
+<p class="echomodel">My echo model</p>
+```
 
 ### Binding
 
 Code:
-`
+```js
 UserInterface.model({
 	name: "button",
 	method: UserInterface.appendChild,
@@ -120,13 +122,15 @@ UserInterface.bind("button", function(element) {
 	element.textContent = "bound";
 });
 UserInterface.runModel("button", {parentNode: document.body});
-`
+```
 Output:
-`<button>bound</button>`
+```html
+<button>bound</button>
+```
 
 ### Listener
 
-`
+```js
 UserInterface.model({
 	name: "myModel",
 	method: UserInterface.appendChild,
@@ -147,7 +151,7 @@ UserInterface.bind("someobscuremodel", function(element, myObj) {
 	})
 });
 UserInterface.runModel("button", {parentNode: document.body});
-`
+```
 
 ## Changelog
 
