@@ -26,7 +26,9 @@ It often goes along with a binding that is automatically called after a model is
 
 If you are mot sure what you can do with that you might want to [check out](https://github.com/thoughtsunificator/userinterface.js-samples) the demos I wrote using userinterface.js.
 
-### userinterface.js-collection
+### Collection
+
+userinterface.js also includes some some basic models to get you started head over to the [userinterface.js-collection](https://github.com/thoughtsunificator/userinterface.js-collection) repository to check them out.
 
 ## Examples
 
