@@ -1,8 +1,0 @@
-Procedural -> Feature -> Unit testing -> Abstraction -> Refactorization -> Unit testing -> Feature
-- Do not blindly refactorize
-- Do not remove anything
-- Small steps
-- Do not add any more processed properties
-- Do not add any more helpers
-- Build prototypes to test logics against various scenarios
-- Fix the bugs
