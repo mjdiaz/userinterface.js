@@ -28,7 +28,7 @@ If you are mot sure what you can do with that you might want to [check out](http
 
 ### Collection
 
-userinterface.js also includes some some basic models to get you started head over to the [userinterface.js-collection](https://github.com/thoughtsunificator/userinterface.js-collection) repository to check them out.
+userinterface.js also includes some basic models to get you started head over to the [userinterface.js-collection](https://github.com/thoughtsunificator/userinterface.js-collection) repository to check them out.
 
 ## Examples
 
