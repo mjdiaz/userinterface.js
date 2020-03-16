@@ -152,8 +152,3 @@ UserInterface.bind("someobscuremodel", function(element, myObj) {
 });
 UserInterface.runModel("button", {parentNode: document.body});
 ```
-
-## Changelog
-
-[23/04/19] Fixed asElements where tagName property would be replaced by the first item when used with count
-[30/10/19] Bindings are now called before element is added to the DOMjhnk
