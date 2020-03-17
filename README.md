@@ -281,5 +281,6 @@ UserInterface.runModel("button", {parentNode: document.body});
 
 ## Unit testing
 
+- npm install
 - npm install -g nodeunit
 - nodeunit
