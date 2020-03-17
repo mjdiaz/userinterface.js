@@ -278,3 +278,8 @@ UserInterface.bind("someobscuremodel", function(element, myObj) {
 });
 UserInterface.runModel("button", {parentNode: document.body});
 ```
+
+## Unit testing
+
+- npm install -g nodeunit
+- nodeunit
