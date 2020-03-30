@@ -1,56 +1,105 @@
 # userinterface.js
 
-userinterface.js was built around the idea that logic relating to how the visual look and how the visual works should be separated and it should be clear that these are two distinct entities.
+I made and maintained for a few years this browser extension called [bettermyanimelist](https://github.com/thoughtsunificator/bettermyanimelist) and I can remember that I would often write tons of code that would later make good features. However those were not easy to maintain and I had two things I wanted to do: one is that I would have a way to write code that could be reused accross the entire application and the second to centralize events.
 
-At the same time userinterface.js is providing a new way to write and organize your UI.
+userinterface.js was built around the idea that logic relating to how the visual looks and how the visual works should be distinguished.
 
-Another advantage of using userinterface.js is code reusability through principles of separation of concerns as well UI mechanism abstraction.
+At the same time userinterface.js is providing new ways to write and organize your UI.
 
+Another advantage of using userinterface.js is code reusability through principles of separation of concerns as well UI mechanisms abstraction.
+
+In other word, it's a small library to build front-end apps especially good for web extensions.
 
 ## Getting started
 
-To get started with userinterface.js scaffold a new project by following the instructions on the [userinterface.js-skeleton](https://github.com/thoughtsunificator/userinterface.js-skeleton) repository.
+### Prerequisites
+
+None, 100% pure Vanilla JS :)
+
+### Installing
+
+#### Scaffold
+
+To get started with userinterface.js all you need to do is scaffold a new project by following the instructions on the [userinterface.js-skeleton](https://github.com/thoughtsunificator/userinterface.js-skeleton) repository.
+
+#### Standalone
+
+In order to be able to use userinterface.js in the browser you can use git submodules.
+
+Run ```git submodule add https://github.com/thoughtsunificator/userinterface.js.git lib/userinterface.js``` at the root of your project.
+
+userinterface.js is located in the ```lib/``` folder at the root of your project.
 
 ### Directory structure
 
-- data (json files etc.)
-- lib (external & internal libraries)
-- resource (stylesheet, images and such)
-- src (userinterface.js models, objects and bindings)
-- test (unit testing stuff)
+- ```data/``` json files etc.
 
-### Models
+- ```lib/``` external & internal libraries
 
-A model is an object representation of a tree of [Nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node).
-It often goes along with a binding that is automatically called after a model is run as well as an Object that will mostly try to explain how the model works.
+- ```resource/``` stylesheet, images and such
 
-If you are mot sure what you can do with that you might want to [check out](https://github.com/thoughtsunificator/userinterface.js-samples) the demos I wrote using userinterface.js.
+- ```src/``` models, objects and bindings
 
-### Collection
 
-userinterface.js also includes some basic models to get you started head over to the [userinterface.js-collection](https://github.com/thoughtsunificator/userinterface.js-collection) repository to check them out.
+### Model
 
+A ```Model``` is an object representation of a tree of [Nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node).
+It has three required properties depending on the method: ```name```, ```method``` and ```properties``` or ```callback```,
+
+The ```name``` property will be the identifier of your model it will be used whenever you need to run your model.
+The ```method``` property will describe how your model should be ran.
+The ```properties``` and ```callback``` properties will contain the properties of your Elements.
+
+A ```Model``` often goes along with a [Binding](#Binding) and an [Object](#Object).
+
+### Binding
+
+A ```Binding``` is a callback function that, when bound to a model, is automatically called whenever the model has ran.
+```Bindings``` will make your models more alive, an example of that would be adding an event listener to your model, that is the place where you will be doing it.
+
+You can also do much more such as using event listeners to connect all of your models together!
+
+### Object
+
+```Objects``` are the backbone of your models they will store and manipulate data for your ```Binding```.
+That's where you want to hide the complicated stuff.
+
+### Method
+
+- ```appendChild``` Append your model to the target
+
+- ```insertBefore``` Insert your model before the target
+
+- ```removeElement``` Remove the target
+
+- ```replaceElement``` Replace the target with your model
+
+- ```updateElement``` Update the target according to your model
+
+- ```wrapElement``` Wrap the target inside your model
+
+- ```removeListeners``` Remove the listeners of the target
 
 ### API
 
 <dl>
 <dt><a href="#model">model(model)</a></dt>
-<dd><p>Create a model</p>
+<dd><p>Load a model</p>
 </dd>
 <dt><a href="#bind">bind(name, callback)</a></dt>
-<dd><p>Link a model and a given function</p>
+<dd><p>Link a model to a &quot;binding&quot;, that is a callback function</p>
 </dd>
 <dt><a href="#runModel">runModel(name, [parameters])</a></dt>
-<dd><p>Fire a model</p>
+<dd><p>Update the DOM accordingly to a model</p>
 </dd>
 <dt><a href="#createNodes">createNodes(properties)</a> ⇒ <code>Array.&lt;Element&gt;</code></dt>
-<dd><p>Create one or many Nodes</p>
+<dd><p>Transform a model into one or many Elements</p>
 </dd>
 <dt><a href="#getModelProperties">getModelProperties(name, [data])</a> ⇒ <code>Object</code></dt>
 <dd><p>Returns the properties of a model</p>
 </dd>
 <dt><a href="#listen">listen(context, title, callback)</a></dt>
-<dd><p>Add a listener</p>
+<dd><p>Load a listener</p>
 </dd>
 <dt><a href="#announce">announce(context, title, content)</a></dt>
 <dd><p>Message one or many listeners</p>
@@ -59,16 +108,16 @@ userinterface.js also includes some basic models to get you started head over to
 
 <a name="model"></a>
 
-#### model(model)
-Create a model
+## model(model)
+Load a model
 
 **Kind**: global function
 
 | Param | Type | Description |
 | --- | --- | --- |
-| model | <code>type</code> |  |
+| model | <code>object</code> |  |
 | model.name | <code>string</code> | The name of the model |
-| model.method | <code>string</code> | The name of the method |
+| model.method | <code>string</code> | One of the following methods name: appendChild, insertBefore, removeElement, updateElement, replaceElement, wrapElement, removeListeners |
 | model.properties | <code>Object</code> | Processed properties along with any properties an Element¹ can have |
 | model.callback | <code>function</code> | Callback of processed properties along with any properties an Element¹ can have |
 | [model.properties.count] | <code>number</code> | The number of element |
@@ -77,8 +126,8 @@ Create a model
 
 <a name="bind"></a>
 
-#### bind(name, callback)
-Link a model and a given function
+## bind(name, callback)
+Link a model to a "binding", that is a callback function
 
 **Kind**: global function
 
@@ -89,8 +138,8 @@ Link a model and a given function
 
 <a name="runModel"></a>
 
-#### runModel(name, [parameters])
-Fire a model
+## runModel(name, [parameters])
+Update the DOM accordingly to a model
 
 **Kind**: global function
 
@@ -99,24 +148,24 @@ Fire a model
 | name | <code>string</code> | The name of the model |
 | [parameters] | <code>Object</code> | The parameters of the model |
 | [parameters.data] | <code>Object</code> | The data that will be echoed on the model |
-| [parameters.parentNode] | <code>Object</code> | The Element¹ each selector will query on |
-| [parameters.bindingArgs] | <code>Object</code> | The arguments that go along with the binding |
+| [parameters.parentNode] | <code>Element</code> | The Element¹ each selector will query on |
+| [parameters.bindingArgs] | <code>Array</code> | The parameters that will be passed to the binding |
 
 <a name="createNodes"></a>
 
-#### createNodes(properties) ⇒ <code>Array.&lt;Element&gt;</code>
-Create one or many Nodes
+## createNodes(properties) ⇒ <code>Array.&lt;Element&gt;</code>
+Transform a model into one or many Elements
 
 **Kind**: global function
-**Returns**: <code>Array.&lt;Element&gt;</code> - An array of Nodes¹
+**Returns**: <code>Array.&lt;Element&gt;</code> - An array of Elements¹
 
 | Param | Type | Description |
 | --- | --- | --- |
-| properties | <code>Object</code> \| <code>function</code> | Processed properties along with any properties an Element¹ can have or a callback returning them |
+| properties | <code>Object</code> \| <code>function</code> | Processed properties along with any properties a Element can have or a callback returning them |
 
 <a name="getModelProperties"></a>
 
-#### getModelProperties(name, [data]) ⇒ <code>Object</code>
+## getModelProperties(name, [data]) ⇒ <code>Object</code>
 Returns the properties of a model
 
 **Kind**: global function
@@ -129,8 +178,8 @@ Returns the properties of a model
 
 <a name="listen"></a>
 
-#### listen(context, title, callback)
-Add a listener
+## listen(context, title, callback)
+Load a listener
 
 **Kind**: global function
 
@@ -142,7 +191,7 @@ Add a listener
 
 <a name="announce"></a>
 
-#### announce(context, title, content)
+## announce(context, title, content)
 Message one or many listeners
 
 **Kind**: global function
@@ -153,10 +202,14 @@ Message one or many listeners
 | title | <code>string</code> | The title of the announce |
 | content | <code>\*</code> | The content of the announce |
 
-
 ## Examples
 
+Here you will find some basic examples to do stuff such as how to create a model, a binding and even to make your models communicate with each other.
+
 ### Basic model
+
+We create a model named ```simple model``` with the method ```appendChild``` it has a two ```LI``` [element](https://developer.mozilla.org/en-US/docs/Web/API/Element) children that have the className ```simplemodel``` and textContent ```My first simple model```.
+Yes you got it, every properties (except for ```count``` and ```children```) will be set to the [element](https://developer.mozilla.org/en-US/docs/Web/API/Element).
 
 Code:
 ```js
@@ -182,7 +235,9 @@ Output:
 
 ### Children
 
-Code:
+In the previous example we created a simple model, but what if we wanted to do more and add some children to it ?
+The ```children``` property is here for that, it is an Array where you can specify child elements.
+
 ```js
 UserInterface.model({
 	name: "children",
@@ -214,7 +269,12 @@ Output:
 
 ### Callback
 
-Code:
+Models are required to have either the ```properties``` property or ```callback``` property, but exactly what does the ```callback``` property do ?
+It is used when you want to echo some data in your model.
+
+For example here, we have a model called ```echomodel``` that has the ```callback``` property. This property works the same as the ```properties``` property does except that an extra step is added before your model is ran.
+The ```callback``` will return a ```properties``` object accordingly to the data you passed through ```runModel```.
+
 ```js
 UserInterface.model(
 	name: "echomodel",
@@ -235,7 +295,9 @@ Output:
 
 ### Binding
 
-Code:
+Bindings are a way to make your models more alive by allowing them to do things whenever their respective method is executed.
+That means if you want to add a listener to an Element that's where you will be doing it.
+
 ```js
 UserInterface.model({
 	name: "button",
@@ -255,6 +317,17 @@ Output:
 ```
 
 ### Listener
+
+Listeners allow your models to communicate with each others.
+
+In this example we are creating and running a model called ```myModel``` that will himself run another model and pass it the context ```myObj```.
+
+Contexts represent a reserved area for models to communicate with each others, they're often represented as Object but could pretty much be anything.
+
+After the second model ran it will listen to the "greeting"  ```announce```.
+Did you notice the event listener in our first model ? Yes, whenever our first model is clicked it will ```announce``` "greeting" to the context ```myObj``` and pass it an empty object as data. This empty object could also be anything that you want to pass to the other model.
+
+When your model receives an announce it also comes along with data.
 
 ```js
 UserInterface.model({
@@ -279,8 +352,16 @@ UserInterface.bind("someobscuremodel", function(element, myObj) {
 UserInterface.runModel("button", {parentNode: document.body});
 ```
 
-## Unit testing
+## Using the Collection
 
-- npm install
-- npm install -g nodeunit
-- nodeunit
+userinterface.js also provides a [collection](https://github.com/thoughtsunificator/userinterface.js-collection) that contains a few basic models to get you started.
+
+## Demos
+
+I created a few small applications that uses userinterface.js, you might want to [check them out](https://github.com/thoughtsunificator/userinterface.js-samples/tree/master/demo/suraidaa) the demos I wrote using userinterface.js.
+
+## Running the tests
+
+In order to be able to run the test you need to install nodeunit: ```npm install -g nodeunit```.
+
+Use ```nodeunit``` to run the tests.
