@@ -30,17 +30,6 @@ Run ```git submodule add https://github.com/thoughtsunificator/userinterface.js.
 
 userinterface.js is located in the ```lib/``` folder at the root of your project.
 
-### Directory structure
-
-- ```data/``` json files etc.
-
-- ```lib/``` external & internal libraries
-
-- ```resource/``` stylesheet, images and such
-
-- ```src/``` models, objects and bindings
-
-
 ### Model
 
 A ```Model``` is an object representation of a tree of [Nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node).
