@@ -30,17 +30,6 @@ Run ```git submodule add https://github.com/thoughtsunificator/userinterface.js.
 
 userinterface.js is located in the ```lib/``` folder at the root of your project.
 
-### Directory structure
-
-- ```data/``` json files etc.
-
-- ```lib/``` external & internal libraries
-
-- ```resource/``` stylesheet, images and such
-
-- ```src/``` models, objects and bindings
-
-
 ### Model
 
 A ```Model``` is an object representation of a tree of [Nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node).
@@ -358,7 +347,13 @@ userinterface.js also provides a [collection](https://github.com/thoughtsunifica
 
 ## Demos
 
-I created a few small applications that uses userinterface.js, you might want to [check them out](https://github.com/thoughtsunificator/userinterface.js-samples/tree/master/demo/suraidaa) the demos I wrote using userinterface.js.
+- [suraidaa](https://thoughtsunificator.github.io/userinterface.js-samples/demo/suraidaa)
+- [puissance4](https://thoughtsunificator.github.io/userinterface.js-samples/demo/puissance4)
+- [consoru](https://thoughtsunificator.github.io/userinterface.js-samples/demo/consoru)
+- [calculator](https://thoughtsunificator.github.io/userinterface.js-samples/demo/calculator)
+- [ms_paint](https://thoughtsunificator.github.io/userinterface.js-samples/demo/ms_paint)
+
+You will find all the demos on the [userinterface.js-samples](https://github.com/thoughtsunificator/userinterface.js-samples) repository.
 
 ## Running the tests
 
