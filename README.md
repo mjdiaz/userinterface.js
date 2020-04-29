@@ -348,10 +348,12 @@ userinterface.js also provides a [collection](https://github.com/thoughtsunifica
 ## Demos
 
 - [suraidaa](https://thoughtsunificator.github.io/userinterface.js-samples/demo/suraidaa)
-- [puissance4](https://thoughtsunificator.github.io/userinterface.js-samples/demo/puissance4))
-- [consoru](https://thoughtsunificator.github.io/userinterface.js-samples/demo/consoru))
-- [calculator](https://thoughtsunificator.github.io/userinterface.js-samples/demo/calculator))
-- [ms_paint](https://thoughtsunificator.github.io/userinterface.js-samples/demo/ms_paint))
+- [puissance4](https://thoughtsunificator.github.io/userinterface.js-samples/demo/puissance4)
+- [consoru](https://thoughtsunificator.github.io/userinterface.js-samples/demo/consoru)
+- [calculator](https://thoughtsunificator.github.io/userinterface.js-samples/demo/calculator)
+- [ms_paint](https://thoughtsunificator.github.io/userinterface.js-samples/demo/ms_paint)
+
+You will find all the demos on the [userinterface.js-samples](https://github.com/thoughtsunificator/userinterface.js-samples) repository.
 
 ## Running the tests
 
