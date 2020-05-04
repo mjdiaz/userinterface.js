@@ -353,8 +353,6 @@ userinterface.js also provides a [collection](https://github.com/thoughtsunifica
 - [calculator](https://github.com/thoughtsunificator/userinterface.js-calculator)
 - [ms_paint](https://github.com/thoughtsunificator/userinterface.js-ms_paint)
 
-You will find all the demos on the [userinterface.js-samples](https://github.com/thoughtsunificator/userinterface.js-samples) repository.
-
 ## Running the tests
 
 In order to be able to run the test you need to install nodeunit: ```npm install -g nodeunit```.
