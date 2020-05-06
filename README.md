@@ -32,7 +32,7 @@ userinterface.js is located in the ```lib/``` folder at the root of your project
 
 ### Model
 
-A ```Model``` is an object representation of a tree of [Nodes](https://developer.mozilla.org/en-US/docs/Web/API/Node).
+A ```Model``` is an object representation of a [Node](https://developer.mozilla.org/en-US/docs/Web/API/Node).
 It has three required properties depending on the method: ```name```, ```method``` and ```properties``` or ```callback```,
 
 The ```name``` property will be the identifier of your model it will be used whenever you need to run your model.
