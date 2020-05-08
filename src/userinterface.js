@@ -7,7 +7,7 @@
 	const UPDATE_ELEMENT = "updateElement"
 	const REPLACE_ELEMENT = "replaceElement"
 	const WRAP_ELEMENT = "wrapElement"
-	const REMOVE_LISTENERS = "removeListeners"
+	const CLEAR_LISTENERS = "clearListeners"
 	const METHODS_CREATE = [
 		APPEND_CHILD,
 		INSERT_BEFORE,
@@ -18,20 +18,19 @@
 	const _models = []
 	const _listeners = []
 
-	this.DEBUG = false
 	this.appendChild = APPEND_CHILD
 	this.insertBefore = INSERT_BEFORE
 	this.removeElement = REMOVE_ELEMENT
 	this.replaceElement = REPLACE_ELEMENT
 	this.updateElement = UPDATE_ELEMENT
 	this.wrapElement = WRAP_ELEMENT
-	this.removeListeners = REMOVE_LISTENERS
+	this.clearListeners = CLEAR_LISTENERS
 
 	/**
 	 * Load a model
 	 * @param {object} 							model
 	 * @param {string} 							model.name                  The name of the model
-	 * @param {string} 							model.method                One of the following methods name: appendChild, insertBefore, removeElement, updateElement, replaceElement, wrapElement, removeListeners
+	 * @param {string} 							model.method                One of the following methods name: appendChild, insertBefore, removeElement, updateElement, replaceElement, wrapElement, clearListeners
 	 * @param {?Object}							model.properties  					Processed properties along with any properties an Element¹ can have
 	 * @param {?function}						model.callback  						Callback of processed properties along with any properties an Element¹ can have
 	 * @param {number} 							[model.properties.count] 	 	The number of element
@@ -39,38 +38,6 @@
 	 * @param {string[]} 						[model.cssSelectors]        The CSS selector(s) of the target(s)
 	 */
 	this.model = function(model) {
-		if(typeof model === "undefined") {
-			throw new Error(`"model" parameter is required.`)
-		}
-		if(typeof model !== "object") {
-			throw new Error(`"model" parameter must be an object.`)
-		}
-		if(typeof model.name === "undefined") {
-			throw new Error(`"model.name" parameter is required.`)
-		}
-		if(typeof model.name !== "string") {
-			throw new Error(`"model.name" must be a string.`)
-		}
-		if(typeof model.method === "undefined") {
-			throw new Error(`"model.method" parameter is required.`)
-		}
-		if(typeof model.method !== "string") {
-			throw new Error(`"model.method" must be a string.`)
-		}
-		if(model.method !== REMOVE_ELEMENT && model.method !== REMOVE_LISTENERS) {
-			if(typeof model.properties === "undefined" && typeof model.callback === "undefined") {
-				throw new Error(`"model.properties" or "model.callback" parameter is required .`)
-			}
-			if(typeof model.properties !== "undefined" && typeof model.properties !== "object") {
-				throw new Error(`"model.properties" must be an object.`)
-			}
-			if(typeof model.callback !== "undefined" && typeof model.callback !== "function") {
-				throw new Error(`"model.callback" must be a function.`)
-			}
-		}
-		if (this.DEBUG === true) {
-			console.log("[model]", model.method, model.name)
-		}
 		_models.push(model)
 	}
 
@@ -80,21 +47,6 @@
 	 * @param {function} callback The function binding the model
 	*/
 	this.bind = function(name, callback) {
-		if(typeof name === "undefined") {
-			throw new Error(`"name" parameter is required.`)
-		}
-		if(typeof name !== "string") {
-			throw new Error(`"name" parameter must be a string.`)
-		}
-		if(typeof callback === "undefined") {
-			throw new Error(`"callback" parameter is required.`)
-		}
-		if(typeof callback !== "function") {
-			throw new Error(`"callback" parameter must be a function.`)
-		}
-		if (this.DEBUG === true) {
-			console.log("[bind]", name)
-		}
 		_models.find(model => model.name === name).binding = {name, callback}
 	}
 
@@ -107,29 +59,7 @@
 	 * @param {Array}   [parameters.bindingArgs] The arguments that go along with the binding
 	 */
 	this.runModel = async function(name, parameters = {}) {
-		if(typeof name === "undefined") {
-			throw new Error(`"name" parameter is required.`)
-		}
-		if(typeof name !== "string") {
-			throw new Error(`"name" parameter must be a string.`)
-		}
-		if(typeof parameters !== "object") {
-			throw new Error(`"parameters" parameter must be an object.`)
-		} else {
-			if(typeof parameters.parentNode !== "undefined" && typeof parameters.parentNode !== "object") {
-				throw new Error(`"parameters.parentNode" parameter must be an Element.`)
-			}
-			if(typeof parameters.bindingArgs !== "undefined" && Array.isArray(parameters.bindingArgs) === false) {
-				throw new Error(`"parameters.bindingArgs" parameter must be an array.`)
-			}
-		}
-		if (this.DEBUG === true) {
-			console.log("[runModel]", name)
-		}
 		const model = _models.find(model => model.name === name)
-		if(typeof model === "undefined") {
-			throw new Error(`Model "${name}" was not found. It might not have been loaded due to an error.`)
-		}
 		let { method, properties } = model
 		if (model.hasOwnProperty("callback") === true) {
 			properties = model.callback(parameters.data)
@@ -172,7 +102,7 @@
 			} else if (method === WRAP_ELEMENT) {
 				nodes[index].appendChild(target.cloneNode(true))
 				target.parentNode.replaceChild(nodes[index], target)
-			} else if (method === REMOVE_LISTENERS) {
+			} else if (method === CLEAR_LISTENERS) {
 				target.parentNode.replaceChild(target.cloneNode(true), target)
 			}
 			if (nodes.length >= 1 && model.hasOwnProperty("binding") === true) {
@@ -225,12 +155,6 @@
 	 * @return {Object}	       The "properties" object of the model
 	 */
 	this.getModelProperties = function(name, data) {
-		if(typeof name === "undefined") {
-			throw new Error(`"name" parameter is required.`)
-		}
-		if(typeof name !== "string") {
-			throw new Error(`"name" parameter must be a string.`)
-		}
 		const model = _models.find(model => model.name === name)
 		if (model.hasOwnProperty("callback")) {
 			return model.callback(data)
@@ -245,26 +169,18 @@
 	 * @param  {string}   title 	 The content of the message
 	 * @param  {function} callback
 	 */
-	this.listen = function(context, title, callback) { // FIXME
-		if(typeof context === "undefined") {
-			throw new Error(`"context" parameter is required.`)
-		}
-		if(typeof title === "undefined") {
-			throw new Error(`"title" parameter is required.`)
-		}
-		if(typeof title !== "string") {
-			throw new Error(`"title" parameter must be a string.`)
-		}
-		if(typeof callback === "undefined") {
-			throw new Error(`"callback" parameter is required.`)
-		}
-		if(typeof callback !== "function") {
-			throw new Error(`"callback" parameter must be a function.`)
-		}
-		if (this.DEBUG === true) {
-			console.log("(listen)", title)
-		}
-		_listeners.push({context, title, callback})
+	this.listen = function(context, title, callback) {
+		const listener = {context, title, callback}
+		_listeners.push(listener)
+		return listener
+	}
+
+	/**
+	 * [removeListener description]
+	 * @param  {Object} listener [description]
+	 */
+	this.removeListener = function(listener) {
+		_listeners.splice(_listeners.indexOf(listener), 1)
 	}
 
 	/**
@@ -273,19 +189,7 @@
 	 * @param  {string} title 	The title of the announce
 	 * @param  {*} 			content The content of the announce
 	 */
-	this.announce = async function(context, title, content) { // FIXME
-		if (this.DEBUG === true) {
-			console.log("(announce)", title)
-		}
-		if(typeof context === "undefined") {
-			throw new Error(`"context" parameter is required.`)
-		}
-		if(typeof title === "undefined") {
-			throw new Error(`"title" parameter is required.`)
-		}
-		if(typeof title !== "string") {
-			throw new Error(`"title" parameter must be a string.`)
-		}
+	this.announce = async function(context, title, content) {
 		const listeners = _listeners.filter(listener => listener.context === context && listener.title === title)
 		for (const listener of listeners) {
 			await listener.callback(content)

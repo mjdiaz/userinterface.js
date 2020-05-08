@@ -437,7 +437,7 @@ exports.bindingsNestedModels = async function (test) {
 	test.done()
 }
 
-exports.removeListeners = async function (test) {
+exports.clearListeners = async function (test) {
 	test.expect(2)
 
 	let clicked = false
@@ -447,7 +447,7 @@ exports.removeListeners = async function (test) {
 	})
 	window.UserInterface.model({
 		name: "nodeunit.button",
-		method: window.UserInterface.removeListeners,
+		method: window.UserInterface.clearListeners,
 		cssSelectors: ["button"]
 	})
 	window.document.querySelector("button").click()
@@ -484,17 +484,17 @@ exports.parentNode = async function (test) {
 }
 
 exports.listeners = async function (test) {
-	let path = []
+	const path = []
 	test.expect(1)
-	function MyContext() {}
-	function MyContext2() {}
-	window.UserInterface.listen(MyContext, "test1", data => path.push("first"))
-	window.UserInterface.listen(MyContext, "test1", data => path.push("second"))
-	window.UserInterface.listen(MyContext, "test2", data => path.push("third"))
-	window.UserInterface.listen(MyContext2, "test1", data => path.push("fourth"))
-	await window.UserInterface.announce(MyContext, "test1")
-	await window.UserInterface.announce(MyContext, "test2")
-	await window.UserInterface.announce(MyContext2, "test1")
+	const myContext = {}
+	const myContext2 = {}
+	window.UserInterface.listen(myContext, "test1", data => path.push("first"))
+	window.UserInterface.listen(myContext, "test1", data => path.push("second"))
+	window.UserInterface.listen(myContext, "test2", data => path.push("third"))
+	window.UserInterface.listen(myContext2, "test1", data => path.push("fourth"))
+	await window.UserInterface.announce(myContext, "test1")
+	await window.UserInterface.announce(myContext, "test2")
+	await window.UserInterface.announce(myContext2, "test1")
 	test.deepEqual(path, [
 		"first", "second", "third", "fourth"
 	])
@@ -503,20 +503,20 @@ exports.listeners = async function (test) {
 
 exports.listenersChained = async function (test) {
 	test.expect(1)
-	let path = []
-	function MyContext() {}
-	window.UserInterface.listen(MyContext, "chained1", async function(data) {
+	const path = []
+	const myContext = {}
+	window.UserInterface.listen(myContext, "chained1", async function(data) {
 		path.push("chained1")
-		await window.UserInterface.announce(MyContext, "chained2")
+		await window.UserInterface.announce(myContext, "chained2")
 	})
-	window.UserInterface.listen(MyContext, "chained2", async function(data) {
+	window.UserInterface.listen(myContext, "chained2", async function(data) {
 		path.push("chained2")
-		await window.UserInterface.announce(MyContext, "chained3")
+		await window.UserInterface.announce(myContext, "chained3")
 	})
-	window.UserInterface.listen(MyContext, "chained3", async function(data) {
+	window.UserInterface.listen(myContext, "chained3", async function(data) {
 		path.push("chained3")
 	})
-	await window.UserInterface.announce(MyContext, "chained1")
+	await window.UserInterface.announce(myContext, "chained1")
 	test.deepEqual(path, [
 		"chained1", "chained2", "chained3"
 	])
@@ -525,28 +525,49 @@ exports.listenersChained = async function (test) {
 
 exports.listenersNested = async function (test) {
 	test.expect(1)
-	let path = []
-	function MyContext() {}
-	window.UserInterface.listen(MyContext, "nest1", async function(data) {
+	const path = []
+	const myContext = {}
+	window.UserInterface.listen(myContext, "nest1", async function(data) {
 		path.push("nest1")
-		await window.UserInterface.announce(MyContext, "nest2")
-		await window.UserInterface.announce(MyContext, "nest5")
+		await window.UserInterface.announce(myContext, "nest2")
+		await window.UserInterface.announce(myContext, "nest5")
 	})
-	window.UserInterface.listen(MyContext, "nest2", async function(data) {
+	window.UserInterface.listen(myContext, "nest2", async function(data) {
 		path.push("nest2")
-		await window.UserInterface.announce(MyContext, "nest3")
-		await window.UserInterface.announce(MyContext, "nest4")
+		await window.UserInterface.announce(myContext, "nest3")
+		await window.UserInterface.announce(myContext, "nest4")
 	})
-	window.UserInterface.listen(MyContext, "nest3", data => path.push("nest3"))
-	window.UserInterface.listen(MyContext, "nest4", data => path.push("nest4"))
-	window.UserInterface.listen(MyContext, "nest5", data => path.push("nest5"))
-	await window.UserInterface.announce(MyContext, "nest1")
-	await window.UserInterface.announce(MyContext, "nest1")
-	await window.UserInterface.announce(MyContext, "nest1")
+	window.UserInterface.listen(myContext, "nest3", data => path.push("nest3"))
+	window.UserInterface.listen(myContext, "nest4", data => path.push("nest4"))
+	window.UserInterface.listen(myContext, "nest5", data => path.push("nest5"))
+	await window.UserInterface.announce(myContext, "nest1")
+	await window.UserInterface.announce(myContext, "nest1")
+	await window.UserInterface.announce(myContext, "nest1")
 	test.deepEqual(path, [
 		"nest1", "nest2", "nest3", "nest4", "nest5",
 		"nest1", "nest2", "nest3", "nest4", "nest5",
 		"nest1", "nest2", "nest3", "nest4", "nest5",
+	])
+	test.done()
+}
+
+exports.removeListener = async function (test) {
+	test.expect(1)
+	const path = []
+	const myContext = {}
+	const listener = window.UserInterface.listen(myContext, "test", async function(data) {
+		path.push("1_" + data)
+	})
+	window.UserInterface.listen(myContext, "test", async function(data) {
+		path.push(data)
+	})
+	await window.UserInterface.announce(myContext, "test", "test1")
+	await window.UserInterface.announce(myContext, "test", "test2")
+	window.UserInterface.removeListener(listener)
+	await window.UserInterface.announce(myContext, "test", "test3")
+	await window.UserInterface.announce(myContext, "test", "test4")
+	test.deepEqual(path, [
+		"1_test1", "test1", "1_test2", "test2", "test3", "test4"
 	])
 	test.done()
 }
