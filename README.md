@@ -90,6 +90,9 @@ That's where you want to hide the complicated stuff.
 <dt><a href="#listen">listen(context, title, callback)</a></dt>
 <dd><p>Load a listener</p>
 </dd>
+<dt><a href="#removeListener">removeListener(listener)</a></dt>
+<dd><p>[removeListener description]</p>
+</dd>
 <dt><a href="#announce">announce(context, title, content)</a></dt>
 <dd><p>Message one or many listeners</p>
 </dd>
@@ -106,7 +109,7 @@ Load a model
 | --- | --- | --- |
 | model | <code>object</code> |  |
 | model.name | <code>string</code> | The name of the model |
-| model.method | <code>string</code> | One of the following methods name: appendChild, insertBefore, removeElement, updateElement, replaceElement, wrapElement, removeListeners |
+| model.method | <code>string</code> | One of the following methods name: appendChild, insertBefore, removeElement, updateElement, replaceElement, wrapElement, clearListeners |
 | model.properties | <code>Object</code> | Processed properties along with any properties an Element¹ can have |
 | model.callback | <code>function</code> | Callback of processed properties along with any properties an Element¹ can have |
 | [model.properties.count] | <code>number</code> | The number of element |
@@ -138,7 +141,7 @@ Update the DOM accordingly to a model
 | [parameters] | <code>Object</code> | The parameters of the model |
 | [parameters.data] | <code>Object</code> | The data that will be echoed on the model |
 | [parameters.parentNode] | <code>Element</code> | The Element¹ each selector will query on |
-| [parameters.bindingArgs] | <code>Array</code> | The parameters that will be passed to the binding |
+| [parameters.bindingArgs] | <code>Array</code> | The arguments that go along with the binding |
 
 <a name="createNodes"></a>
 
@@ -177,6 +180,17 @@ Load a listener
 | context | <code>\*</code> | Where the announce will be broadcasted |
 | title | <code>string</code> | The content of the message |
 | callback | <code>function</code> |  |
+
+<a name="removeListener"></a>
+
+## removeListener(listener)
+[removeListener description]
+
+**Kind**: global function
+
+| Param | Type | Description |
+| --- | --- | --- |
+| listener | <code>Object</code> | [description] |
 
 <a name="announce"></a>
 
@@ -347,11 +361,11 @@ userinterface.js also provides a [collection](https://github.com/thoughtsunifica
 
 ## Demos
 
-- [suraidaa](https://github.com/thoughtsunificator/userinterface.js-suraidaa)
-- [puissance4](https://github.com/thoughtsunificator/userinterface.js-puissance4)
-- [consoru](https://github.com/thoughtsunificator/userinterface.js-consoru)
-- [calculator](https://github.com/thoughtsunificator/userinterface.js-calculator)
-- [ms_paint](https://github.com/thoughtsunificator/userinterface.js-ms_paint)
+- [userinterface.js-suraidaa](https://github.com/thoughtsunificator/userinterface.js-suraidaa)
+- [userinterface.js-puissance4](https://github.com/thoughtsunificator/userinterface.js-puissance4)
+- [userinterface.js-consoru](https://github.com/thoughtsunificator/userinterface.js-consoru)
+- [userinterface.js-calculator](https://github.com/thoughtsunificator/userinterface.js-calculator)
+- [userinterface.js-paint](https://github.com/thoughtsunificator/userinterface.js-ms_paint)
 
 ## Running the tests
 
