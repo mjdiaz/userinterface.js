@@ -5,9 +5,11 @@
 		"test": "test"
 	},
 	"scripts": {
-		"test": "nodeunit"
+		"test": "nodeunit",
+		"docs": "jsdoc2md src/userinterface.js"
 	},
 	"devDependencies": {
+		"jsdoc-to-markdown": "^5.0.3",
 		"jsdom": "^13.2.0",
 		"nodeunit": "^0.11.3"
 	},
