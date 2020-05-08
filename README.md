@@ -100,7 +100,7 @@ That's where you want to hide the complicated stuff.
 
 <a name="model"></a>
 
-## model(model)
+#### model(model)
 Load a model
 
 **Kind**: global function
@@ -118,7 +118,7 @@ Load a model
 
 <a name="bind"></a>
 
-## bind(name, callback)
+#### bind(name, callback)
 Link a model to a "binding", that is a callback function
 
 **Kind**: global function
@@ -130,7 +130,7 @@ Link a model to a "binding", that is a callback function
 
 <a name="runModel"></a>
 
-## runModel(name, [parameters])
+#### runModel(name, [parameters])
 Update the DOM accordingly to a model
 
 **Kind**: global function
@@ -145,7 +145,7 @@ Update the DOM accordingly to a model
 
 <a name="createNodes"></a>
 
-## createNodes(properties) ⇒ <code>Array.&lt;Element&gt;</code>
+#### createNodes(properties) ⇒ <code>Array.&lt;Element&gt;</code>
 Transform a model into one or many Elements
 
 **Kind**: global function
@@ -157,7 +157,7 @@ Transform a model into one or many Elements
 
 <a name="getModelProperties"></a>
 
-## getModelProperties(name, [data]) ⇒ <code>Object</code>
+#### getModelProperties(name, [data]) ⇒ <code>Object</code>
 Returns the properties of a model
 
 **Kind**: global function
@@ -170,7 +170,7 @@ Returns the properties of a model
 
 <a name="listen"></a>
 
-## listen(context, title, callback)
+#### listen(context, title, callback)
 Load a listener
 
 **Kind**: global function
@@ -183,7 +183,7 @@ Load a listener
 
 <a name="removeListener"></a>
 
-## removeListener(listener)
+#### removeListener(listener)
 [removeListener description]
 
 **Kind**: global function
@@ -194,7 +194,7 @@ Load a listener
 
 <a name="announce"></a>
 
-## announce(context, title, content)
+#### announce(context, title, content)
 Message one or many listeners
 
 **Kind**: global function
