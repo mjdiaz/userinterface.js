@@ -369,6 +369,6 @@ userinterface.js also provides a [collection](https://github.com/thoughtsunifica
 
 ## Running the tests
 
-In order to be able to run the test you need to install nodeunit: ```npm install -g nodeunit```.
+``npm install``
 
-Use ```nodeunit``` to run the tests.
+Then simply run ``npm test`` to run the tests
