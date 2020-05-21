@@ -355,6 +355,14 @@ UserInterface.bind("someobscuremodel", function(element, myObj) {
 UserInterface.runModel("button", {parentNode: document.body});
 ```
 
+## Commom errors
+
+### Cannot set property 'binding' of undefined
+
+UserInterface.js could not find the model specified when calling ``UserInterface.bind``.
+
+[Open an issue](https://github.com/thoughtsunificator/userinterface.js/issues) if your issue is not listed above.
+
 ## Using the Collection
 
 userinterface.js also provides a [collection](https://github.com/thoughtsunificator/userinterface.js-collection) that contains a few basic models to get you started.
