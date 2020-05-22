@@ -176,8 +176,8 @@
 	}
 
 	/**
-	 * [removeListener description]
-	 * @param  {Object} listener [description]
+	 * Remove a listener
+	 * @param  {Object} listener
 	 */
 	this.removeListener = function(listener) {
 		_listeners.splice(_listeners.indexOf(listener), 1)
