@@ -355,7 +355,7 @@ UserInterface.bind("someobscuremodel", function(element, myObj) {
 UserInterface.runModel("button", {parentNode: document.body});
 ```
 
-## Commom errors
+## Common errors
 
 ### Cannot set property 'binding' of undefined
 
@@ -369,7 +369,7 @@ UserInterface.js could not find the model specified when calling ``UserInterface
 
 One of your model has no ``properties`` key. If your intent was to use the ``callback`` key then you must provide a ``data`` key in the arguments when calling ``runModel``.
 
-[Open an issue](https://github.com/thoughtsunificator/userinterface.js/issues) if your issue is not listed above.
+[Open an issue](https://github.com/thoughtsunificator/userinterface.js/issues) if you think your issue is not listed above.
 
 ## Using the Collection
 
