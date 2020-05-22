@@ -91,7 +91,7 @@ That's where you want to hide the complicated stuff.
 <dd><p>Load a listener</p>
 </dd>
 <dt><a href="#removeListener">removeListener(listener)</a></dt>
-<dd><p>[removeListener description]</p>
+<dd><p>Remove a listener</p>
 </dd>
 <dt><a href="#announce">announce(context, title, content)</a></dt>
 <dd><p>Message one or many listeners</p>
@@ -190,7 +190,7 @@ Load a listener
 
 | Param | Type | Description |
 | --- | --- | --- |
-| listener | <code>Object</code> | [description] |
+| listener | <code>Object</code> |  |
 
 <a name="announce"></a>
 
