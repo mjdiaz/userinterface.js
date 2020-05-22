@@ -365,6 +365,10 @@ UserInterface.js could not find the model specified when calling ``UserInterface
 
 UserInterface.js could not find the model specified when calling ``UserInterface.runModel``.
 
+### Cannot read property 'count' of undefined
+
+One of your model has no properties key. If your intent was to use the ``callback`` key you have to provide a ``data`` key in the arguments when callin ``runModel``.
+
 [Open an issue](https://github.com/thoughtsunificator/userinterface.js/issues) if your issue is not listed above.
 
 ## Using the Collection
