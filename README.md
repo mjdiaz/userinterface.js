@@ -361,6 +361,10 @@ UserInterface.runModel("button", {parentNode: document.body});
 
 UserInterface.js could not find the model specified when calling ``UserInterface.bind``.
 
+### Cannot destructure property 'method' of 'model' as it is undefined.
+
+UserInterface.js could not find the model specified when calling ``UserInterface.runModel``.
+
 [Open an issue](https://github.com/thoughtsunificator/userinterface.js/issues) if your issue is not listed above.
 
 ## Using the Collection
