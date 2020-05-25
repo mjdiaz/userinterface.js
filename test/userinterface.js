@@ -26,10 +26,9 @@ exports.model = async function (test) {
 			className: "simplemodel",
 			id: "simplemodel",
 			textContent: "My first simple model"
-		},
-		cssSelectors: ["body"]
+		}
 	})
-	await window.UserInterface.runModel("nodeunit.simplemodel")
+	await window.UserInterface.runModel("nodeunit.simplemodel", { parentNode: window.document.body })
 	test.strictEqual(window.document.body.innerHTML, expected)
 
 	test.done()
@@ -38,91 +37,6 @@ exports.model = async function (test) {
 exports.modelNotFound = function (test) {
 	test.expect(1)
 	test.throws(window.UserInterface.runModel("dsacxziuychxz"), Error)
-	test.done()
-}
-
-exports.count = async function (test) {
-	test.expect(1)
-
-	const expected = '<div class="simplemodel">My simple model</div><div class="simplemodel">My simple model</div><div class="simplemodel">My simple model</div><div class="simplemodel">My simple model</div><div class="simplemodel">My simple model</div>'
-	window.UserInterface.model({
-		name: "nodeunit.simplecount",
-		method: window.UserInterface.appendChild,
-		properties: {
-			count: 5,
-			tagName: "div",
-			className: "simplemodel",
-			textContent: "My simple model"
-		},
-		cssSelectors: ["body"]
-	})
-	await window.UserInterface.runModel("nodeunit.simplecount")
-	test.strictEqual(window.document.body.innerHTML, expected)
-
-	test.done()
-}
-
-exports.arrayProperties = async function (test) {
-	test.expect(1)
-
-	const expected = '<span class="simplemodel0">My first simple model</span><div class="simplemodel1">My second simple model</div><p class="simplemodel2">My third simple model</p><section class="simplemodel3"></section><h1 class="simplemodel4"></h1>'
-	window.UserInterface.model({
-		name: "nodeunit.arrayproperties",
-		method: window.UserInterface.appendChild,
-		properties: {
-			count: 5,
-			tagName: ["span", "div", "p", "section", "h1"],
-			className: ["simplemodel0", "simplemodel1", "simplemodel2", "simplemodel3", "simplemodel4"],
-			textContent: ["My first simple model", "My second simple model", "My third simple model"]
-		},
-		cssSelectors: ["body"]
-	})
-	await window.UserInterface.runModel("nodeunit.arrayproperties")
-	test.strictEqual(window.document.body.innerHTML, expected)
-
-	test.done()
-}
-
-exports.modelWithMultipleTargets = async function (test) {
-	test.expect(1)
-
-	const expected = '<div class="content0"><div class="simplemodel">My first simple model</div></div><div class="content1"><div class="simplemodel">My first simple model</div></div><div class="content2"><div class="simplemodel">My first simple model</div></div>'
-	window.document.body.innerHTML = '<div class="content0"></div><div class="content1"></div><div class="content2"></div>'
-	window.UserInterface.model({
-		method: window.UserInterface.appendChild,
-		name: "nodeunit.multipletargets",
-		properties: {
-			tagName: "div",
-			className: "simplemodel",
-			property: 1,
-			textContent: "My first simple model"
-		},
-		cssSelectors: [".content0", ".content1", ".content2"]
-	})
-	await window.UserInterface.runModel("nodeunit.multipletargets")
-	test.strictEqual(window.document.body.innerHTML, expected)
-
-	test.done()
-}
-
-exports.selectorAll = async function (test) {
-	test.expect(1)
-
-	const expected = '<div class="content0"><div class="simplemodel">My first simple model</div></div><div class="content0"><div class="simplemodel">My first simple model</div></div><div class="content0"><div class="simplemodel">My first simple model</div></div><div class="content1"><div class="simplemodel">My first simple model</div></div><div class="content2"><div class="simplemodel">My first simple model</div></div>'
-	window.document.body.innerHTML = '<div class="content0"></div><div class="content0"></div><div class="content0"></div><div class="content1"></div><div class="content2"></div>'
-	window.UserInterface.model({
-		name: "nodeunit.selectorAll",
-		method: window.UserInterface.appendChild,
-		properties: {
-			tagName: "div",
-			className: "simplemodel",
-			textContent: "My first simple model"
-		},
-		cssSelectors: ["*.content0", ".content1", ".content2"]
-	})
-	await window.UserInterface.runModel("nodeunit.selectorAll")
-	test.strictEqual(window.document.body.innerHTML, expected)
-
 	test.done()
 }
 
@@ -151,10 +65,9 @@ exports.childNodes = async function (test) {
 					]
 				}
 			]
-		},
-		cssSelectors: ["body"]
+		}
 	})
-	await window.UserInterface.runModel("nodeunit.children")
+	await window.UserInterface.runModel("nodeunit.children", { parentNode: window.document.body })
 	test.strictEqual(window.document.body.innerHTML, expected)
 
 	test.done()
@@ -218,10 +131,9 @@ exports.getModelProperties = async function (test) {
 				window.UserInterface.getModelProperties("nodeunit.childbutton"),
 				window.UserInterface.getModelProperties("nodeunit.child2")
 			]
-		},
-		cssSelectors: ["body"]
+		}
 	})
-	await window.UserInterface.runModel("nodeunit.modelaschild")
+	await window.UserInterface.runModel("nodeunit.modelaschild", { parentNode: window.document.body })
 	test.strictEqual(window.document.body.innerHTML, expected)
 
 	test.done()
@@ -251,10 +163,10 @@ exports.callback = async function (test) {
 					]
 				}
 			]
-		}),
-		cssSelectors: ["body"]
+		})
 	})
 	await window.UserInterface.runModel("nodeunit.callback", {
+		parentNode: window.document.body,
 		data: {
 			"tagName": "p",
 			"textContent": "echo",
@@ -277,10 +189,9 @@ exports.insertBefore = async function (test) {
 		properties: {
 			tagName: "li",
 			textContent: "Second element"
-		},
-		cssSelectors: ["ul li:nth-child(2)"]
+		}
 	})
-	await window.UserInterface.runModel("nodeunit.listModel")
+	await window.UserInterface.runModel("nodeunit.listModel", { parentNode: window.document.querySelector("ul li:nth-child(2)") })
 	test.strictEqual(window.document.body.innerHTML, expected)
 
 	test.done()
@@ -293,10 +204,9 @@ exports.removeElement = async function (test) {
 	window.document.body.innerHTML = '<div class="adiv"></div><div class="removeme"></div>'
 	window.UserInterface.model({
 		name : "nodeunit.removeIt",
-		method: window.UserInterface.removeElement,
-		cssSelectors: [".removeme"]
+		method: window.UserInterface.removeElement
 	})
-	await window.UserInterface.runModel("nodeunit.removeIt")
+	await window.UserInterface.runModel("nodeunit.removeIt", { parentNode: window.document.querySelector(".removeme") })
 	test.strictEqual(window.document.body.innerHTML, expected)
 
 	test.done()
@@ -313,10 +223,9 @@ exports.replaceElement = async function (test) {
 		properties: {
 			tagName: "span",
 			className: "newelement"
-		},
-		cssSelectors: [".oldelement"]
+		}
 	})
-	await window.UserInterface.runModel("nodeunit.removeIt")
+	await window.UserInterface.runModel("nodeunit.removeIt", { parentNode: window.document.querySelector(".oldelement") })
 	test.strictEqual(window.document.body.innerHTML, expected)
 
 	test.done()
@@ -333,10 +242,9 @@ exports.updateElement = async function (test) {
 		method: window.UserInterface.updateElement,
 		properties: {
 			textContent: text
-		},
-		cssSelectors: ["p"]
+		}
 	})
-	await window.UserInterface.runModel("nodeunit.updateDate")
+	await window.UserInterface.runModel("nodeunit.updateDate", { parentNode: window.document.querySelector("p") })
 	test.strictEqual(window.document.body.innerHTML, expected)
 
 	test.done()
@@ -345,8 +253,8 @@ exports.updateElement = async function (test) {
 exports.wrapElement = async function (test) {
 	test.expect(1)
 
-	const expected = '<div class="wrapper"><p></p><textarea></textarea></div><div class="wrapper"><p></p><textarea></textarea></div><div class="wrapper"><p></p><textarea></textarea></div>'
-	window.document.body.innerHTML = '<textarea></textarea><textarea></textarea><textarea></textarea>'
+	const expected = '<div class="wrapper"><p></p><textarea></textarea></div>'
+	window.document.body.innerHTML = '<textarea></textarea>'
 	window.UserInterface.model({
 		name: "nodeunit.makeAForm",
 		method: window.UserInterface.wrapElement,
@@ -358,10 +266,9 @@ exports.wrapElement = async function (test) {
 				tagName: "p",
 				}
 			]
-		},
-		cssSelectors: ["*textarea"]
+		}
 	})
-	await window.UserInterface.runModel("nodeunit.makeAForm")
+	await window.UserInterface.runModel("nodeunit.makeAForm", { parentNode: window.document.querySelector("textarea") })
 	test.strictEqual(window.document.body.innerHTML, expected)
 
 	test.done()
@@ -370,20 +277,18 @@ exports.wrapElement = async function (test) {
 exports.bindings = async function (test) {
 	test.expect(1)
 
-	const expected = '<button>bound</button><button></button>'
+	const expected = '<button>bound</button>'
 	window.UserInterface.model({
 		name: "nodeunit.button",
 		method: window.UserInterface.appendChild,
 		properties: {
-			count: 2,
 			tagName: "button"
-		},
-		cssSelectors: ["body"]
+		}
 	})
 	window.UserInterface.bind("nodeunit.button", function(element) {
 		element.textContent = "bound"
 	})
-	await window.UserInterface.runModel("nodeunit.button")
+	await window.UserInterface.runModel("nodeunit.button", { parentNode: window.document.body })
 	test.strictEqual(window.document.body.innerHTML, expected)
 
 	test.done()
@@ -397,13 +302,12 @@ exports.bindingArgs = async function (test) {
 		method: window.UserInterface.appendChild,
 		properties: {
 			tagName: "button"
-		},
-		cssSelectors: ["body"]
+		}
 	})
 	window.UserInterface.bind("nodeunit.button", function(element, text) {
 		test.strictEqual(text, "bound")
 	})
-	await window.UserInterface.runModel("nodeunit.button", {bindingArgs: ["bound"]})
+	await window.UserInterface.runModel("nodeunit.button", { parentNode: window.document.body, bindingArgs: ["bound"] })
 
 	test.done()
 }
@@ -447,13 +351,12 @@ exports.clearListeners = async function (test) {
 	})
 	window.UserInterface.model({
 		name: "nodeunit.button",
-		method: window.UserInterface.clearListeners,
-		cssSelectors: ["button"]
+		method: window.UserInterface.clearListeners
 	})
 	window.document.querySelector("button").click()
 	test.strictEqual(clicked, true)
 	clicked = false
-	await window.UserInterface.runModel("nodeunit.button")
+	await window.UserInterface.runModel("nodeunit.button", { parentNode: window.document.querySelector("button") })
 	window.document.querySelector("button").click()
 	test.strictEqual(clicked, false)
 

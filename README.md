@@ -81,8 +81,8 @@ That's where you want to hide the complicated stuff.
 <dt><a href="#runModel">runModel(name, [parameters])</a></dt>
 <dd><p>Update the DOM accordingly to a model</p>
 </dd>
-<dt><a href="#createNodes">createNodes(properties)</a> ⇒ <code>Array.&lt;Element&gt;</code></dt>
-<dd><p>Transform a model into one or many Elements</p>
+<dt><a href="#createElement">createElement(properties)</a> ⇒ <code>Element</code></dt>
+<dd><p>Transform a model into an Element</p>
 </dd>
 <dt><a href="#getModelProperties">getModelProperties(name, [data])</a> ⇒ <code>Object</code></dt>
 <dd><p>Returns the properties of a model</p>
@@ -112,9 +112,7 @@ Load a model
 | model.method | <code>string</code> | One of the following methods name: appendChild, insertBefore, removeElement, updateElement, replaceElement, wrapElement, clearListeners |
 | model.properties | <code>Object</code> | Processed properties along with any properties an Element¹ can have |
 | model.callback | <code>function</code> | Callback of processed properties along with any properties an Element¹ can have |
-| [model.properties.count] | <code>number</code> | The number of element |
 | [model.properties.children] | <code>Array.&lt;Object&gt;</code> | An array of the "properties" object |
-| [model.cssSelectors] | <code>Array.&lt;string&gt;</code> | The CSS selector(s) of the target(s) |
 
 <a name="bind"></a>
 
@@ -140,16 +138,16 @@ Update the DOM accordingly to a model
 | name | <code>string</code> | The name of the model |
 | [parameters] | <code>Object</code> | The parameters of the model |
 | [parameters.data] | <code>Object</code> | The data that will be echoed on the model |
-| [parameters.parentNode] | <code>Element</code> | The Element¹ each selector will query on |
+| [parameters.parentNode] | <code>Element</code> | The target |
 | [parameters.bindingArgs] | <code>Array</code> | The arguments that go along with the binding |
 
-<a name="createNodes"></a>
+<a name="createElement"></a>
 
-#### createNodes(properties) ⇒ <code>Array.&lt;Element&gt;</code>
-Transform a model into one or many Elements
+#### createElement(properties) ⇒ <code>Element</code>
+Transform a model into an Element
 
 **Kind**: global function
-**Returns**: <code>Array.&lt;Element&gt;</code> - An array of Elements¹
+**Returns**: <code>Element</code> - An array of Elements¹
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -256,10 +254,9 @@ UserInterface.model({
 				// and so on..
 			}
 		]
-	},
-	cssSelectors: ["body"]
+	}
 });
-UserInterface.runModel("children");
+UserInterface.runModel("children", { parentNode: document.body });
 ```
 Output:
 ```html
@@ -285,11 +282,10 @@ UserInterface.model(
 	callback: data => ({
 		tagName: "p",
 		className: "echomodel",
-		textContent: "My "+data.text+" model",
-		cssSelectors: ["body"]
+		textContent: "My "+data.text+" model"
 	})
 );
-UserInterface.runModel("echomodel", {data: {"text": "echo" }});
+UserInterface.runModel("echomodel", { parentNode: document.body, data: {"text": "echo" } });
 ```
 Output:
 ```html
@@ -312,7 +308,7 @@ UserInterface.model({
 UserInterface.bind("button", function(element) {
 	element.textContent = "bound";
 });
-UserInterface.runModel("button", {parentNode: document.body});
+UserInterface.runModel("button", { parentNode: document.body });
 ```
 Output:
 ```html
