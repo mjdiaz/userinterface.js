@@ -1,6 +1,6 @@
 # userinterface.js [![Build Status](https://travis-ci.com/thoughtsunificator/userinterface.js.svg?branch=master)](https://travis-ci.com/thoughtsunificator/userinterface.js) [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/thoughtsunificator/userinterface.js-skeleton)
 
-I made and maintained for a few years this browser extension called [bettermyanimelist](https://github.com/thoughtsunificator/bettermyanimelist) and I can remember that I would often write tons of code that would later make good features. However those were not easy to maintain and I had two things I wanted to do: one is that I would have a way to write code that could be reused accross the entire application and the second to centralize events.
+I made and maintained for a few years a browser extension and I can remember that I would often write tons of code that would later make good features. However those were not easy to maintain and I had two things I wanted to do: one is that I would have a way to write code that could be reused accross the entire application and the second to centralize events.
 
 userinterface.js was built around the idea that logic relating to how the visual looks and how the visual works should be distinguished.
 
