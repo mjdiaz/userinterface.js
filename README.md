@@ -8,8 +8,6 @@ At the same time userinterface.js is providing new ways to write and organize yo
 
 Another advantage of using userinterface.js is code reusability through principles of separation of concerns as well UI mechanisms abstraction.
 
-In other word, it's a small library to build front-end apps especially good for web extensions.
-
 ## Summary
 
 - [Getting started](#getting-started)
