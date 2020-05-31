@@ -10,6 +10,28 @@ Another advantage of using userinterface.js is code reusability through principl
 
 In other word, it's a small library to build front-end apps especially good for web extensions.
 
+## Summary
+
+- [Getting started](#getting-started)
+	- [Prerequisites](#prerequisites)
+	- [Installing](#installing)
+		- [Scaffold](#scaffold)
+		- [Standalone](#standalone)
+	- [Model](#model)
+		- [Basic model](#basic-model)
+		- [Children](#children)
+		- [Callback](#callback)
+	- [Binding](#binding)
+	- [Object](#object)
+	- [Listeners](#listeners)
+	- [Methods](#methods)
+- [API](#api)
+- [Common errors](#common-errors)
+- [Extensions](#extensions)
+- [Collection](#collection)
+- [Demos](#demos)
+- [Running the tests](#running-the-tests)
+
 ## Getting started
 
 ### Prerequisites
@@ -41,6 +63,93 @@ The ```properties``` and ```callback``` properties will contain the properties o
 
 A ```Model``` often goes along with a [Binding](#Binding) and an [Object](#Object).
 
+#### Basic model
+
+We create a model named ```simple model``` with the method ```appendChild``` it has a two ```LI``` [element](https://developer.mozilla.org/en-US/docs/Web/API/Element) children that have the className ```simplemodel``` and textContent ```My first simple model```.
+Yes you got it, every properties (except for ```count``` and ```children```) will be set to the [element](https://developer.mozilla.org/en-US/docs/Web/API/Element).
+
+Code:
+```js
+UserInterface.model({
+	name: "simplemodel",
+	method: UserInterface.appendChild,
+	properties: {
+		count: 2, // assume count: 1 if omitted
+		tagName: "li", // required
+		className: "simplemodel",
+		textContent: "My first simple model"
+	}
+});
+UserInterface.runModel("simplemodel", {parentNode: document.querySelector("ul")});
+```
+Output:
+```html
+<ul>
+	<li class="simplemodel">My first simple model</li>
+	<li class="simplemodel">My first simple model</li>
+</ul>
+```
+
+#### Children
+
+In the previous example we created a simple model, but what if we wanted to do more and add some children to it ?
+The ```children``` property is here for that, it is an Array where you can specify child elements.
+
+```js
+UserInterface.model({
+	name: "children",
+	method: UserInterface.appendChild,
+	properties: {
+		tagName: "div",
+		className: "model",
+		children: [
+			{
+				tagName: "div",
+				className: "child",
+				textContent: "My first child"
+				// and so on..
+			}
+		]
+	},
+	cssSelectors: ["body"]
+});
+UserInterface.runModel("children");
+```
+Output:
+```html
+<body>
+	<div class="model">
+		<div class="child">My first child</div>
+	</div>
+</body>
+```
+
+#### Callback
+
+Models are required to have either the ```properties``` property or ```callback``` property, but exactly what does the ```callback``` property do ?
+It is used when you want to echo some data in your model.
+
+For example here, we have a model called ```echomodel``` that has the ```callback``` property. This property works the same as the ```properties``` property does except that an extra step is added before your model is ran.
+The ```callback``` will return a ```properties``` object accordingly to the data you passed through ```runModel```.
+
+```js
+UserInterface.model(
+	name: "echomodel",
+	method: UserInterface.appendChild,
+	callback: data => ({
+		tagName: "p",
+		className: "echomodel",
+		textContent: "My "+data.text+" model",
+		cssSelectors: ["body"]
+	})
+);
+UserInterface.runModel("echomodel", {data: {"text": "echo" }});
+```
+Output:
+```html
+<p class="echomodel">My echo model</p>
+```
+
 ### Binding
 
 A ```Binding``` is a callback function that, when bound to a model, is automatically called whenever the model has ran.
@@ -48,10 +157,69 @@ A ```Binding``` is a callback function that, when bound to a model, is automatic
 
 You can also do much more such as using event listeners to connect all of your models together!
 
+A Binding is way to give life to your models enabling them to do things whenever their respective method is executed.
+That means if you want to add a listener to an Element that's where you will be doing it.
+
+In this example we will change the textContent of our model root element.
+
+```js
+UserInterface.model({
+	name: "button",
+	method: UserInterface.appendChild,
+	properties: {
+		tagName: "button"
+	}
+});
+UserInterface.bind("button", function(element) {
+	element.textContent = "bound";
+});
+UserInterface.runModel("button", {parentNode: document.body});
+```
+Output:
+```html
+<button>bound</button>
+```
+
 ### Object
 
 ```Objects``` are the backbone of your models they will store and manipulate data for your ```Binding```.
 That's where you want to hide the complicated stuff.
+
+### Listener
+
+Listeners allow your models to communicate with each others.
+
+In this example we are creating and running a model called ```myModel``` that will himself run another model and pass it the context ```myObj```.
+
+Contexts represent a reserved area for models to communicate with each others, they're often represented as Object but could pretty much be anything.
+
+After the second model ran it will listen to the "greeting"  ```announce```.
+Did you notice the event listener in our first model ? Yes, whenever our first model is clicked it will ```announce``` "greeting" to the context ```myObj``` and pass it an empty object as data. This empty object could also be anything that you want to pass to the other model.
+
+When your model receives an announce it also comes along with data.
+
+```js
+UserInterface.model({
+	name: "myModel",
+	method: UserInterface.appendChild,
+	properties: {
+		tagName: "div"
+	}
+});
+UserInterface.bind("myModel", function(element) {
+	let myObj = new Obj()
+	element.addEventListener("click", function() {
+		UserInterface.announce(myObj, "greeting", {})
+	})
+	UserInterface.runModel("someobscuremodel", {parentNode: document.body, bindingArgs:[myObj]})
+});
+UserInterface.bind("someobscuremodel", function(element, myObj) {
+	UserInterface.listen(myObj, "greeting", function(data) {
+		// do something useful with data or greet back
+	})
+});
+UserInterface.runModel("button", {parentNode: document.body});
+```
 
 ### Method
 
@@ -205,155 +373,6 @@ Message one or many listeners
 | title | <code>string</code> | The title of the announce |
 | content | <code>\*</code> | The content of the announce |
 
-## Examples
-
-Here you will find some basic examples to do stuff such as how to create a model, a binding and even to make your models communicate with each other.
-
-### Basic model
-
-We create a model named ```simple model``` with the method ```appendChild``` it has a two ```LI``` [element](https://developer.mozilla.org/en-US/docs/Web/API/Element) children that have the className ```simplemodel``` and textContent ```My first simple model```.
-Yes you got it, every properties (except for ```count``` and ```children```) will be set to the [element](https://developer.mozilla.org/en-US/docs/Web/API/Element).
-
-Code:
-```js
-UserInterface.model({
-	name: "simplemodel",
-	method: UserInterface.appendChild,
-	properties: {
-		count: 2, // assume count: 1 if omitted
-		tagName: "li", // required
-		className: "simplemodel",
-		textContent: "My first simple model"
-	}
-});
-UserInterface.runModel("simplemodel", {parentNode: document.querySelector("ul")});
-```
-Output:
-```html
-<ul>
-	<li class="simplemodel">My first simple model</li>
-	<li class="simplemodel">My first simple model</li>
-</ul>
-```
-
-### Children
-
-In the previous example we created a simple model, but what if we wanted to do more and add some children to it ?
-The ```children``` property is here for that, it is an Array where you can specify child elements.
-
-```js
-UserInterface.model({
-	name: "children",
-	method: UserInterface.appendChild,
-	properties: {
-		tagName: "div",
-		className: "model",
-		children: [
-			{
-				tagName: "div",
-				className: "child",
-				textContent: "My first child"
-				// and so on..
-			}
-		]
-	},
-	cssSelectors: ["body"]
-});
-UserInterface.runModel("children");
-```
-Output:
-```html
-<body>
-	<div class="model">
-		<div class="child">My first child</div>
-	</div>
-</body>
-```
-
-### Callback
-
-Models are required to have either the ```properties``` property or ```callback``` property, but exactly what does the ```callback``` property do ?
-It is used when you want to echo some data in your model.
-
-For example here, we have a model called ```echomodel``` that has the ```callback``` property. This property works the same as the ```properties``` property does except that an extra step is added before your model is ran.
-The ```callback``` will return a ```properties``` object accordingly to the data you passed through ```runModel```.
-
-```js
-UserInterface.model(
-	name: "echomodel",
-	method: UserInterface.appendChild,
-	callback: data => ({
-		tagName: "p",
-		className: "echomodel",
-		textContent: "My "+data.text+" model",
-		cssSelectors: ["body"]
-	})
-);
-UserInterface.runModel("echomodel", {data: {"text": "echo" }});
-```
-Output:
-```html
-<p class="echomodel">My echo model</p>
-```
-
-### Binding
-
-Bindings are a way to make your models more alive by allowing them to do things whenever their respective method is executed.
-That means if you want to add a listener to an Element that's where you will be doing it.
-
-```js
-UserInterface.model({
-	name: "button",
-	method: UserInterface.appendChild,
-	properties: {
-		tagName: "button"
-	}
-});
-UserInterface.bind("button", function(element) {
-	element.textContent = "bound";
-});
-UserInterface.runModel("button", {parentNode: document.body});
-```
-Output:
-```html
-<button>bound</button>
-```
-
-### Listener
-
-Listeners allow your models to communicate with each others.
-
-In this example we are creating and running a model called ```myModel``` that will himself run another model and pass it the context ```myObj```.
-
-Contexts represent a reserved area for models to communicate with each others, they're often represented as Object but could pretty much be anything.
-
-After the second model ran it will listen to the "greeting"  ```announce```.
-Did you notice the event listener in our first model ? Yes, whenever our first model is clicked it will ```announce``` "greeting" to the context ```myObj``` and pass it an empty object as data. This empty object could also be anything that you want to pass to the other model.
-
-When your model receives an announce it also comes along with data.
-
-```js
-UserInterface.model({
-	name: "myModel",
-	method: UserInterface.appendChild,
-	properties: {
-		tagName: "div"
-	}
-});
-UserInterface.bind("myModel", function(element) {
-	let myObj = new Obj()
-	element.addEventListener("click", function() {
-		UserInterface.announce(myObj, "greeting", {})
-	})
-	UserInterface.runModel("someobscuremodel", {parentNode: document.body, bindingArgs:[myObj]})
-});
-UserInterface.bind("someobscuremodel", function(element, myObj) {
-	UserInterface.listen(myObj, "greeting", function(data) {
-		// do something useful with data or greet back
-	})
-});
-UserInterface.runModel("button", {parentNode: document.body});
-```
 
 ## Common errors
 
@@ -365,13 +384,9 @@ UserInterface.js could not find the model specified when calling ``UserInterface
 
 UserInterface.js could not find the model specified when calling ``UserInterface.runModel``.
 
-### Cannot read property 'count' of undefined
-
-One of your model has no ``properties`` key. If your intent was to use the ``callback`` key then you must provide a ``data`` key in the arguments when calling ``runModel``.
-
 [Open an issue](https://github.com/thoughtsunificator/userinterface.js/issues) if you think your issue is not listed above.
 
-## Using the Collection
+## Collection
 
 userinterface.js also provides a [collection](https://github.com/thoughtsunificator/userinterface.js-collection) that contains a few basic models to get you started.
 
