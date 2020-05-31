@@ -20,12 +20,11 @@ Another advantage of using userinterface.js is code reusability through principl
 		- [Children](#children)
 		- [Callback](#callback)
 	- [Binding](#binding)
-	- [Object](#object)
+	- [Objects](#objects)
 	- [Listeners](#listeners)
-	- [Methods](#methods)
+- [Methods](#methods)
 - [API](#api)
 - [Common errors](#common-errors)
-- [Extensions](#extensions)
 - [Collection](#collection)
 - [Demos](#demos)
 - [Running the tests](#running-the-tests)
@@ -178,12 +177,12 @@ Output:
 <button>bound</button>
 ```
 
-### Object
+### Objects
 
 ```Objects``` are the backbone of your models they will store and manipulate data for your ```Binding```.
 That's where you want to hide the complicated stuff.
 
-### Listener
+### Listeners
 
 Listeners allow your models to communicate with each others.
 
@@ -219,7 +218,7 @@ UserInterface.bind("someobscuremodel", function(element, myObj) {
 UserInterface.runModel("button", {parentNode: document.body});
 ```
 
-### Method
+### Methods
 
 - ```appendChild``` Append your model to the target
 
