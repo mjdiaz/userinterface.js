@@ -142,6 +142,7 @@ UserInterface.model(
 		cssSelectors: ["body"]
 	})
 );
+
 UserInterface.runModel("echomodel", {data: {"text": "echo" }});
 ```
 Output:
@@ -169,9 +170,11 @@ UserInterface.model({
 		tagName: "button"
 	}
 });
+
 UserInterface.bind("button", function(element) {
 	element.textContent = "bound";
 });
+
 UserInterface.runModel("button", { parentNode: document.body });
 ```
 Output:
@@ -215,17 +218,23 @@ UserInterface.model({
 });
 
 UserInterface.bind("myModel", function(element) {
-	let myObj = new Obj()
+
+	const _myObj = new Obj();
+
 	element.addEventListener("click", function() {
-		UserInterface.announce(myObj, "greeting", {})
-	})
-	UserInterface.runModel("someobscuremodel", { parentNode: document.body, bindingArgs:[myObj] })
+		UserInterface.announce(_myObj, "greeting", {});
+	});
+
+	UserInterface.runModel("someobscuremodel", { parentNode: document.body, bindingArgs:[_myObj] });
+
 });
 
 UserInterface.bind("someobscuremodel", function(element, myObj) {
+
 	UserInterface.listen(myObj, "greeting", function(data) {
 		// do something useful with data or greet back
-	})
+	});
+
 });
 
 UserInterface.runModel("button", { parentNode: document.body });
