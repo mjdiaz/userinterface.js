@@ -63,7 +63,7 @@ A ```Model``` often goes along with a [Binding](#Binding) and an [Object](#Objec
 #### Basic model
 
 We create a model named ```simple model``` with the method ```appendChild``` it has a two ```LI``` [element](https://developer.mozilla.org/en-US/docs/Web/API/Element) children that have the className ```simplemodel``` and textContent ```My first simple model```.
-Yes you got it, every properties (except for ```count``` and ```children```) will be set to the [element](https://developer.mozilla.org/en-US/docs/Web/API/Element).
+Yes you got it, every properties (except ```children```) will be set to the [element](https://developer.mozilla.org/en-US/docs/Web/API/Element).
 
 Code:
 ```js
@@ -71,7 +71,6 @@ UserInterface.model({
 	name: "simplemodel",
 	method: UserInterface.appendChild,
 	properties: {
-		count: 2, // assume count: 1 if omitted
 		tagName: "li", // required
 		className: "simplemodel",
 		textContent: "My first simple model"
@@ -83,7 +82,6 @@ UserInterface.runModel("simplemodel", { parentNode: document.querySelector("ul")
 Output:
 ```html
 <ul>
-	<li class="simplemodel">My first simple model</li>
 	<li class="simplemodel">My first simple model</li>
 </ul>
 ```
@@ -108,11 +106,10 @@ UserInterface.model({
 				// and so on..
 			}
 		]
-	},
-	cssSelectors: ["body"]
+	}
 });
 
-UserInterface.runModel("children");
+UserInterface.runModel("children", { parentNode: document.body });
 ```
 Output:
 ```html
@@ -138,12 +135,11 @@ UserInterface.model(
 	callback: data => ({
 		tagName: "p",
 		className: "echomodel",
-		textContent: "My "+data.text+" model",
-		cssSelectors: ["body"]
+		textContent: "My "+data.text+" model"
 	})
 );
 
-UserInterface.runModel("echomodel", {data: {"text": "echo" }});
+UserInterface.runModel("echomodel", { parentNode: document.body, data: {"text": "echo" } });
 ```
 Output:
 ```html
@@ -265,7 +261,7 @@ UserInterface.runModel("button", { parentNode: document.body });
 <dt><a href="#bind">bind(name, callback)</a></dt>
 <dd><p>Link a model to a &quot;binding&quot;, that is a callback function</p>
 </dd>
-<dt><a href="#runModel">runModel(name, [parameters])</a></dt>
+<dt><a href="#runModel">runModel(name, parameters)</a></dt>
 <dd><p>Update the DOM accordingly to a model</p>
 </dd>
 <dt><a href="#createNodes">createNodes(properties)</a> ⇒ <code>Array.&lt;Element&gt;</code></dt>
@@ -299,9 +295,7 @@ Load a model
 | model.method | <code>string</code> | One of the following methods name: appendChild, insertBefore, removeElement, updateElement, replaceElement, wrapElement, clearListeners |
 | model.properties | <code>Object</code> | Processed properties along with any properties an Element¹ can have |
 | model.callback | <code>function</code> | Callback of processed properties along with any properties an Element¹ can have |
-| [model.properties.count] | <code>number</code> | The number of element |
 | [model.properties.children] | <code>Array.&lt;Object&gt;</code> | An array of the "properties" object |
-| [model.cssSelectors] | <code>Array.&lt;string&gt;</code> | The CSS selector(s) of the target(s) |
 
 <a name="bind"></a>
 
@@ -317,7 +311,7 @@ Link a model to a "binding", that is a callback function
 
 <a name="runModel"></a>
 
-#### runModel(name, [parameters])
+#### runModel(name, parameters)
 Update the DOM accordingly to a model
 
 **Kind**: global function
@@ -325,9 +319,9 @@ Update the DOM accordingly to a model
 | Param | Type | Description |
 | --- | --- | --- |
 | name | <code>string</code> | The name of the model |
-| [parameters] | <code>Object</code> | The parameters of the model |
+| parameters | <code>Object</code> | The parameters of the model |
+| parameters.parentNode | <code>Element</code> | The target Node |
 | [parameters.data] | <code>Object</code> | The data that will be echoed on the model |
-| [parameters.parentNode] | <code>Element</code> | The Element¹ each selector will query on |
 | [parameters.bindingArgs] | <code>Array</code> | The arguments that go along with the binding |
 
 <a name="createNodes"></a>
