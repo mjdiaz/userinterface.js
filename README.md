@@ -77,7 +77,8 @@ UserInterface.model({
 		textContent: "My first simple model"
 	}
 });
-UserInterface.runModel("simplemodel", {parentNode: document.querySelector("ul")});
+
+UserInterface.runModel("simplemodel", { parentNode: document.querySelector("ul") });
 ```
 Output:
 ```html
@@ -110,6 +111,7 @@ UserInterface.model({
 	},
 	cssSelectors: ["body"]
 });
+
 UserInterface.runModel("children");
 ```
 Output:
@@ -170,7 +172,7 @@ UserInterface.model({
 UserInterface.bind("button", function(element) {
 	element.textContent = "bound";
 });
-UserInterface.runModel("button", {parentNode: document.body});
+UserInterface.runModel("button", { parentNode: document.body });
 ```
 Output:
 ```html
@@ -203,19 +205,30 @@ UserInterface.model({
 		tagName: "div"
 	}
 });
+
+UserInterface.model({
+	name: "someobscuremodel",
+	method: UserInterface.appendChild,
+	properties: {
+		tagName: "div"
+	}
+});
+
 UserInterface.bind("myModel", function(element) {
 	let myObj = new Obj()
 	element.addEventListener("click", function() {
 		UserInterface.announce(myObj, "greeting", {})
 	})
-	UserInterface.runModel("someobscuremodel", {parentNode: document.body, bindingArgs:[myObj]})
+	UserInterface.runModel("someobscuremodel", { parentNode: document.body, bindingArgs:[myObj] })
 });
+
 UserInterface.bind("someobscuremodel", function(element, myObj) {
 	UserInterface.listen(myObj, "greeting", function(data) {
 		// do something useful with data or greet back
 	})
 });
-UserInterface.runModel("button", {parentNode: document.body});
+
+UserInterface.runModel("button", { parentNode: document.body });
 ```
 
 ### Methods
