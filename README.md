@@ -54,7 +54,7 @@ userinterface.js is located in the ```lib/``` folder at the root of your project
 A ```Model``` is an object representation of a [Node](https://developer.mozilla.org/en-US/docs/Web/API/Node).
 It has three required properties depending on the method: ```name```, ```method``` and ```properties``` or ```callback```,
 
-The ```name``` property will be the identifier of your model it will be used whenever you need to run your model.
+The ```name``` property will be the identifier of your model it will be used whenever you need to run your model but also to associate a binding to your model.
 The ```method``` property will describe how your model should be ran.
 The ```properties``` and ```callback``` properties will contain the properties of your Elements.
 
@@ -62,7 +62,7 @@ A ```Model``` often goes along with a [Binding](#Binding) and an [Object](#Objec
 
 #### Basic model
 
-We create a model named ```simple model``` with the method ```appendChild``` it has a two ```LI``` [element](https://developer.mozilla.org/en-US/docs/Web/API/Element) children that have the className ```simplemodel``` and textContent ```My first simple model```.
+We create a model named ```simple model``` with the method ```appendChild``` it has a one ```LI``` [element](https://developer.mozilla.org/en-US/docs/Web/API/Element) children that have the className ```simplemodel``` and textContent ```My first simple model```.
 Yes you got it, every properties (except ```children```) will be set to the [element](https://developer.mozilla.org/en-US/docs/Web/API/Element).
 
 Code:
@@ -185,11 +185,11 @@ That's where you want to hide the complicated stuff.
 
 ### Listeners
 
-Listeners allow your models to communicate with each others.
+Listeners enable intercommunication for your models.
 
 In this example we are creating and running a model called ```myModel``` that will himself run another model and pass it the context ```myObj```.
 
-Contexts represent a reserved area for models to communicate with each others, they're often represented as Object but could pretty much be anything.
+Contexts represent a reserved area for models to communicate with each others, they're often represented as an instance of an object but could pretty much be anything.
 
 After the second model ran it will listen to the "greeting"  ```announce```.
 Did you notice the event listener in our first model ? Yes, whenever our first model is clicked it will ```announce``` "greeting" to the context ```myObj``` and pass it an empty object as data. This empty object could also be anything that you want to pass to the other model.
@@ -365,7 +365,6 @@ Load a listener
 <a name="removeListener"></a>
 
 #### removeListener(listener)
-[removeListener description]
 
 **Kind**: global function
 
@@ -405,6 +404,7 @@ userinterface.js also provides a [collection](https://github.com/thoughtsunifica
 
 ## Demos
 
+- [userinterface.js-todo](https://github.com/thoughtsunificator/userinterface.js-todo)
 - [userinterface.js-suraidaa](https://github.com/thoughtsunificator/userinterface.js-suraidaa)
 - [userinterface.js-puissance4](https://github.com/thoughtsunificator/userinterface.js-puissance4)
 - [userinterface.js-consoru](https://github.com/thoughtsunificator/userinterface.js-consoru)
