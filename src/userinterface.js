@@ -88,9 +88,10 @@
 	}
 
 	/**
-	 * Transform a model into one or many Elements
-	 * @param   {?(Object|function)} properties	Processed properties along with any properties a Element can have or a callback returning them
-	 * @returns {Element}                       An array of Elements¹
+	 * Transform a model into an Element
+	 * @param   {object}   properties	Processed properties along with any properties a Element can have
+	 * @param   {function} [callback]	Callback version of properties
+	 * @returns {Element}             An array of Elements¹
 	 */
 	this.createElement = async function(properties) {
 		const { tagName, children = [] } = properties

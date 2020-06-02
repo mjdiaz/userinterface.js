@@ -19,6 +19,7 @@ Another advantage of using userinterface.js is code reusability through principl
 		- [Basic model](#basic-model)
 		- [Children](#children)
 		- [Callback](#callback)
+		- [Processed properties](#processed-properties)
 	- [Binding](#binding)
 	- [Objects](#objects)
 	- [Listeners](#listeners)
@@ -119,7 +120,6 @@ Output:
 	</div>
 </body>
 ```
-
 #### Callback
 
 Models are required to have either the ```properties``` property or ```callback``` property, but exactly what does the ```callback``` property do ?
@@ -145,6 +145,11 @@ Output:
 ```html
 <p class="echomodel">My echo model</p>
 ```
+
+#### Processed properties
+
+- ``children`` Add children to an element
+
 
 ### Binding
 
@@ -264,8 +269,8 @@ UserInterface.runModel("button", { parentNode: document.body });
 <dt><a href="#runModel">runModel(name, parameters)</a></dt>
 <dd><p>Update the DOM accordingly to a model</p>
 </dd>
-<dt><a href="#createNodes">createNodes(properties)</a> ⇒ <code>Array.&lt;Element&gt;</code></dt>
-<dd><p>Transform a model into one or many Elements</p>
+<dt><a href="#createElement">createElement(properties, [callback])</a> ⇒ <code>Element</code></dt>
+<dd><p>Transform a model into an Element</p>
 </dd>
 <dt><a href="#getModelProperties">getModelProperties(name, [data])</a> ⇒ <code>Object</code></dt>
 <dd><p>Returns the properties of a model</p>
@@ -294,7 +299,7 @@ Load a model
 | model.name | <code>string</code> | The name of the model |
 | model.method | <code>string</code> | One of the following methods name: appendChild, insertBefore, removeElement, updateElement, replaceElement, wrapElement, clearListeners |
 | model.properties | <code>Object</code> | Processed properties along with any properties an Element¹ can have |
-| model.callback | <code>function</code> | Callback of processed properties along with any properties an Element¹ can have |
+| [model.callback] | <code>function</code> | Callback of processed properties along with any properties an Element¹ can have |
 | [model.properties.children] | <code>Array.&lt;Object&gt;</code> | An array of the "properties" object |
 
 <a name="bind"></a>
@@ -324,17 +329,18 @@ Update the DOM accordingly to a model
 | [parameters.data] | <code>Object</code> | The data that will be echoed on the model |
 | [parameters.bindingArgs] | <code>Array</code> | The arguments that go along with the binding |
 
-<a name="createNodes"></a>
+<a name="createElement"></a>
 
-#### createNodes(properties) ⇒ <code>Array.&lt;Element&gt;</code>
-Transform a model into one or many Elements
+#### createElement(properties, [callback]) ⇒ <code>Element</code>
+Transform a model into one Element
 
 **Kind**: global function
-**Returns**: <code>Array.&lt;Element&gt;</code> - An array of Elements¹
+**Returns**: <code>Element</code> - An Element¹
 
 | Param | Type | Description |
 | --- | --- | --- |
-| properties | <code>Object</code> \| <code>function</code> | Processed properties along with any properties a Element can have or a callback returning them |
+| properties | <code>object</code> | Processed properties along with any properties a Element can have |
+| [callback] | <code>function</code> | Callback version of properties |
 
 <a name="getModelProperties"></a>
 
