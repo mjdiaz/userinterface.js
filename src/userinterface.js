@@ -31,8 +31,8 @@
 	 * @param {object} 							model
 	 * @param {string} 							model.name                  The name of the model
 	 * @param {string} 							model.method                One of the following methods name: appendChild, insertBefore, removeElement, updateElement, replaceElement, wrapElement, clearListeners
-	 * @param {?Object}							model.properties  					Processed properties along with any properties an Element¹ can have
-	 * @param {?function}						model.callback  						Callback of processed properties along with any properties an Element¹ can have
+	 * @param {Object}							model.properties  					Processed properties along with any properties an Element¹ can have
+	 * @param {function}						[model.callback]  					Callback of processed properties along with any properties an Element¹ can have
 	 * @param {Object[]} 						[model.properties.children]	An array of the "properties" object
 	 */
 	this.model = function(model) {
