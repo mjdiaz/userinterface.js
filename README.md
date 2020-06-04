@@ -23,10 +23,15 @@ Another advantage of using userinterface.js is code reusability through principl
 	- [Binding](#binding)
 	- [Objects](#objects)
 	- [Listeners](#listeners)
+		- [Main object](#main-object)
+		- [Listening to events](#listening-to-events)
+		- [Announcing events](#announcing-events)
+		- [Removing event listeners](#removing-event-listeners)
 - [Methods](#methods)
 - [API](#api)
 - [Common errors](#common-errors)
 - [Collection](#collection)
+- [Extensions](#extensions)
 - [Demos](#demos)
 - [Running the tests](#running-the-tests)
 
@@ -66,7 +71,7 @@ A ```Model``` often goes along with a [Binding](#Binding) and an [Object](#Objec
 We create a model named ```simple model``` with the method ```appendChild``` it has a one ```LI``` [element](https://developer.mozilla.org/en-US/docs/Web/API/Element) children that have the className ```simplemodel``` and textContent ```My first simple model```.
 Yes you got it, every properties (except ```children```) will be set to the [element](https://developer.mozilla.org/en-US/docs/Web/API/Element).
 
-Code:
+``src/userinterface/simplemodel.js``
 ```js
 UserInterface.model({
 	name: "simplemodel",
@@ -77,7 +82,9 @@ UserInterface.model({
 		textContent: "My first simple model"
 	}
 });
+```
 
+```js
 UserInterface.runModel("simplemodel", { parentNode: document.querySelector("ul") });
 ```
 Output:
@@ -92,6 +99,7 @@ Output:
 In the previous example we created a simple model, but what if we wanted to do more and add some children to it ?
 The ```children``` property is here for that, it is an Array where you can specify child elements.
 
+``src/userinterface/children.js``
 ```js
 UserInterface.model({
 	name: "children",
@@ -109,7 +117,9 @@ UserInterface.model({
 		]
 	}
 });
+```
 
+```js
 UserInterface.runModel("children", { parentNode: document.body });
 ```
 Output:
@@ -128,6 +138,7 @@ It is used when you want to echo some data in your model.
 For example here, we have a model called ```echomodel``` that has the ```callback``` property. This property works the same as the ```properties``` property does except that an extra step is added before your model is ran.
 The ```callback``` will return a ```properties``` object accordingly to the data you passed through ```runModel```.
 
+``src/userinterface/echomodel.js``
 ```js
 UserInterface.model(
 	name: "echomodel",
@@ -138,9 +149,12 @@ UserInterface.model(
 		textContent: "My "+data.text+" model"
 	})
 );
+```
 
+```js
 UserInterface.runModel("echomodel", { parentNode: document.body, data: {"text": "echo" } });
 ```
+
 Output:
 ```html
 <p class="echomodel">My echo model</p>
@@ -163,6 +177,7 @@ That means if you want to add a listener to an Element that's where you will be 
 
 In this example we will change the textContent of our model root element.
 
+``src/userinterface/button.js``
 ```js
 UserInterface.model({
 	name: "button",
@@ -175,9 +190,12 @@ UserInterface.model({
 UserInterface.bind("button", function(element) {
 	element.textContent = "bound";
 });
+```
 
+```js
 UserInterface.runModel("button", { parentNode: document.body });
 ```
+
 Output:
 ```html
 <button>bound</button>
@@ -192,15 +210,21 @@ That's where you want to hide the complicated stuff.
 
 Listeners enable intercommunication for your models.
 
-In this example we are creating and running a model called ```myModel``` that will himself run another model and pass it the context ```myObj```.
+#### Main object
 
-Contexts represent a reserved area for models to communicate with each others, they're often represented as an instance of an object but could pretty much be anything.
+You usually wants to have a ``main object`` that you will pass to most of your models so that they communicate with each other through a central.
 
-After the second model ran it will listen to the "greeting"  ```announce```.
-Did you notice the event listener in our first model ? Yes, whenever our first model is clicked it will ```announce``` "greeting" to the context ```myObj``` and pass it an empty object as data. This empty object could also be anything that you want to pass to the other model.
+Note that you are not forced to have one and you could have multiple observables and still be able to handle inter-model communication.
 
-When your model receives an announce it also comes along with data.
+Most of the time we call it ``application``.
 
+#### Listening to events
+
+In this example we are creating and running a model called ```myModel``` that will listen for the event ``greeting`` on through the ``application`` context.
+
+A Context represent a reserved area (a channel) that events will be bound to, they're often represented as an instance of an object but could pretty much be anything.
+
+``src/userinterface/my-model.js``
 ```js
 UserInterface.model({
 	name: "myModel",
@@ -209,36 +233,79 @@ UserInterface.model({
 		tagName: "div"
 	}
 });
+UserInterface.bind("myModel", function(element, application) {
 
+	UserInterface.listen(application, "greeting", (message) => {
+		console.log(message)
+	})
+
+});
+```
+
+
+```js
+const application = {}
+
+UserInterface.runModel("myModel", { parentNode: document.body, bindingArgs: [application] });
+```
+
+For the moment we are only listening to the ``greeting`` event, we haven't announced anything to it yet.
+
+#### Announcing events
+
+In the previous example we setup a ``greeting`` listener on ``application``.
+
+Now, let's try to announce to the event.
+
+``src/userinterface/another-model.js``
+```js
 UserInterface.model({
-	name: "someobscuremodel",
+	name: "anotherModel",
 	method: UserInterface.appendChild,
 	properties: {
 		tagName: "div"
 	}
 });
+UserInterface.bind("anotherModel", function(element, application) {
 
-UserInterface.bind("myModel", function(element) {
-
-	const _myObj = new Obj();
-
-	element.addEventListener("click", function() {
-		UserInterface.announce(_myObj, "greeting", {});
-	});
-
-	UserInterface.runModel("someobscuremodel", { parentNode: document.body, bindingArgs:[_myObj] });
+	UserInterface.announce(application, "greeting", "Hello!");
 
 });
+```
 
-UserInterface.bind("someobscuremodel", function(element, myObj) {
+```js
+const application = {}
 
-	UserInterface.listen(myObj, "greeting", function(data) {
-		// do something useful with data or greet back
-	});
+UserInterface.runModel("myModel", { parentNode: document.body, bindingArgs: [application] });
+UserInterface.runModel("anotherModel", { parentNode: document.body, bindingArgs: [application] });
+```
 
-});
+If everything went well you should be able see a ``Hello!`` log message in the console.
 
-UserInterface.runModel("button", { parentNode: document.body });
+#### Removing event listeners
+
+Sometimes you might want your model to be dynamically added and removed, meaning that it will be added upon an action and removed upon another action.
+
+The issue is that if you added event listeners to an object you need to clean the object from all the listeners that were added by this binding otherwise as your binding is executed multiple times the same listeners keep adding.
+
+Usually what you want to do is to create ``_listener`` variable and push all the listeners to this array and then remove them as needed using ``forEach`` for example.
+
+In this example, we create a listener ``message`` and remove it whenever the event ``done`` is emitted.
+
+```javascript
+UserInterface.bind("myDynamicModel", function(element, application) {
+
+	const _listeners = []
+
+	_listeners.push(UserInterface.listen(application, "message", data => {
+		console.log(data)
+	}))
+
+	_listeners(UserInterface.listen(application, "done", () => {
+		_listeners.forEach(listener => UserInterface.removeListener(listener))
+	}))
+
+})
 ```
 
 ### Methods
@@ -391,7 +458,6 @@ Message one or many listeners
 | title | <code>string</code> | The title of the announce |
 | content | <code>\*</code> | The content of the announce |
 
-
 ## Common errors
 
 ### Cannot set property 'binding' of undefined
@@ -407,6 +473,10 @@ UserInterface.js could not find the model specified when calling ``UserInterface
 ## Collection
 
 userinterface.js also provides a [collection](https://github.com/thoughtsunificator/userinterface.js-collection) that contains a few basic models to get you started.
+
+## Extensions
+
+- [userinterface.js-paginator](https://github.com/thoughtsunificator/userinterface.js-paginator)
 
 ## Demos
 
