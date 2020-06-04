@@ -4,10 +4,6 @@ I made and maintained for a few years a browser extension and I can remember tha
 
 userinterface.js was built around the idea that logic relating to how the visual looks and how the visual works should be distinguished.
 
-At the same time userinterface.js is providing new ways to write and organize your UI.
-
-Another advantage of using userinterface.js is code reusability through principles of separation of concerns as well UI mechanisms abstraction.
-
 ## Summary
 
 - [Getting started](#getting-started)
