@@ -229,7 +229,7 @@ UserInterface.model({
 });
 UserInterface.bind("myModel", function(element, application) {
 
-	UserInterface.listen(application, "greeting", (message) => {
+	UserInterface.listen(application, "greeting", async (message) => {
 		console.log(message)
 	})
 
@@ -291,11 +291,11 @@ UserInterface.bind("myDynamicModel", function(element, application) {
 
 	const _listeners = []
 
-	_listeners.push(UserInterface.listen(application, "message", data => {
+	_listeners.push(UserInterface.listen(application, "message", async data => {
 		console.log(data)
 	}))
 
-	_listeners(UserInterface.listen(application, "done", () => {
+	_listeners(UserInterface.listen(application, "done", async () => {
 		_listeners.forEach(listener => UserInterface.removeListener(listener))
 	}))
 
