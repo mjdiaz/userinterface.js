@@ -16,7 +16,7 @@
 	]
 
 	const _models = []
-	const _listeners = []
+	let _listeners = []
 
 	this.appendChild = APPEND_CHILD
 	this.insertBefore = INSERT_BEFORE
@@ -138,7 +138,8 @@
 	 * @param  {Object} listener
 	 */
 	this.removeListener = function(listener) {
-		_listeners.splice(_listeners.indexOf(listener), 1)
+		_listeners = _listeners.filter(listener_ => listener_ !== listener)
+		// _listeners.splice(_listeners.indexOf(listener), 1)
 	}
 
 	/**
